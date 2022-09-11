@@ -1,4 +1,5 @@
 import Course from '../models/course.model.js';
+import Category from '../models/category.model.js';
 
 export const createCourse = async (req, res) => {
     try {
@@ -18,10 +19,19 @@ export const createCourse = async (req, res) => {
 
 export const getAllCourses = async (req, res) => {
     try {
-        const courses = await Course.find();
+        const category = await Category.findOne({ slug: req.query.category });
+        
+        let courses;
+        if(category){
+            courses = await Course.find({ category: category._id });
+        } else {
+            courses = await Course.find();
+        }
+        const categories = await Category.find();
         res.status(200).render('courses', {
             page_name: 'courses',
-            courses
+            courses,
+            categories
         });
     }
     catch(err) {
