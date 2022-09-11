@@ -1,14 +1,30 @@
 import express from 'express';
-import mainRouter from './routes/main.router.js';
+import mongoose from 'mongoose';
+import mainRoute from './routes/main.route.js';
+import courseRoute from './routes/course.route.js';
 
 const app = express();
+
+// connect DB
+mongoose.connect('mongodb://localhost/smart-edu-db')
+    .then(() => {
+        console.log('mongodb successfully connected.');
+    });
 
 // template engine
 app.set('view engine', 'ejs');
 
 // middlewares
 app.use(express.static('public'));
-app.use(mainRouter);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// routes
+app.use('/', mainRoute);
+app.use('/courses', courseRoute);
+app.get('*', (req, res) => {
+    res.sendStatus(404);
+});
 
 const port = 3000;
 app.listen(port, () => {
