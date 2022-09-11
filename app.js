@@ -1,9 +1,13 @@
 import express from 'express';
-import mainRouter from './routers/main.router.js';
+import mainRouter from './routes/main.router.js';
 
 const app = express();
 
+// template engine
+app.set('view engine', 'ejs');
+
 // middlewares
+app.use(express.static('public'));
 app.use(mainRouter);
 
 const port = 3000;

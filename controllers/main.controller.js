@@ -1,9 +1,17 @@
 export const getHomePage = (req, res) => {
-    res.status(200).send('hello from main.controller.js!');
+    res.status(200).render('index', {
+        page_name: 'index'
+    });
+}
+export const getAboutPage = (req, res) => {
+    res.status(200).render('about', {
+        page_name: 'about'
+    });
 }
 
 const mainController = {
-    getHomePage
+    getHomePage,
+    getAboutPage,
 }
 
 export default mainController;
