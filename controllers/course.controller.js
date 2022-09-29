@@ -3,11 +3,8 @@ import Category from '../models/category.model.js';
 
 export const createCourse = async (req, res) => {
     try {
-        const course = await Course.create(req.body);
-        res.status(201).json({
-            status: 'success',
-            course
-        });
+        await Course.create(req.body);
+        res.status(201).redirect('/courses');
     }
     catch(err) {
         res.status(400).json({
@@ -23,10 +20,11 @@ export const getAllCourses = async (req, res) => {
         
         let courses;
         if(category){
-            courses = await Course.find({ category: category._id });
+            courses = await Course.find({ category: category._id }).sort('-createdAt');
         } else {
-            courses = await Course.find();
+            courses = await Course.find().sort('-createdAt');
         }
+        
         const categories = await Category.find();
         res.status(200).render('courses', {
             page_name: 'courses',
